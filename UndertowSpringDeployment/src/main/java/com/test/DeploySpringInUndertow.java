@@ -34,7 +34,7 @@ public class DeploySpringInUndertow {
 
 		DeploymentInfo servletBuilder = Servlets.deployment()
 				.setClassLoader(DeploySpringInUndertow.class.getClassLoader())
-				.setContextPath("/myapp").setDeploymentName("test.war")
+				.setContextPath(CONTEXT_PATH).setDeploymentName("test.war")
 				.addServlets(createDispatcherServlet())
 				.addListener(createContextLoaderListener());
 
@@ -122,7 +122,7 @@ public class DeploySpringInUndertow {
 	private static final Semaphore semaphore = new Semaphore(0);
 
 	private static final String MAPPING_URL = "/*";
-	private static final String CONTEXT_PATH = "/SupportAssist";
+	private static final String CONTEXT_PATH = "/myapp";
 
 	private static Undertow server;
 	private static final Logger log = LoggerFactory
