@@ -35,15 +35,15 @@ public class DeploySpringInUndertow {
 
 		DeploymentInfo servletBuilder = Servlets.deployment()
 				.setClassLoader(DeploySpringInUndertow.class.getClassLoader())
-				.setContextPath(CONTEXT_PATH).setDeploymentName("test.war")
+				.setContextPath(CONTEXT_PATH).setDeploymentName(PKG_NAME)
 				.addServlets(createDispatcherServlet())
 				.addListener(createContextLoaderListener());
 
 		DeploymentManager manager = Servlets.defaultContainer().addDeployment(
 				servletBuilder);
 		manager.deploy();
-		PathHandler path = Handlers.path(Handlers.redirect("/myapp"))
-				.addPrefixPath("/myapp", manager.start());
+		PathHandler path = Handlers.path(Handlers.redirect(CONTEXT_PATH))
+				.addPrefixPath(CONTEXT_PATH, manager.start());
 
 		server = Undertow.builder().addHttpListener(8080, "localhost")
 				.setHandler(path).build();
@@ -68,6 +68,7 @@ public class DeploySpringInUndertow {
 
 	private static final String MAPPING_URL = "/*";
 	private static final String CONTEXT_PATH = "/myapp";
+	private static final String PKG_NAME = "myapp.war";
 
 	private static Undertow server;
 	private static final Logger log = LoggerFactory
