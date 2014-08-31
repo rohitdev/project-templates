@@ -1,4 +1,4 @@
-package com.test.common.config;
+package com.test.spring.config;
 
 import java.util.List;
 

@@ -6,8 +6,6 @@ import io.undertow.server.handlers.PathHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.servlet.api.InstanceFactory;
-import io.undertow.servlet.api.InstanceHandle;
 import io.undertow.servlet.api.ListenerInfo;
 import io.undertow.servlet.api.ServletInfo;
 
@@ -19,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import com.test.spring.config.ContextLoaderListenerInstanceFactory;
+import com.test.spring.config.DispatcherServletInstanceFactory;
 
 public class DeploySpringInUndertow {
 
@@ -61,62 +62,6 @@ public class DeploySpringInUndertow {
 		// MAPPING_URL);
 		return Servlets.servlet("DispatcherServlet", DispatcherServlet.class,
 				new DispatcherServletInstanceFactory()).addMapping(MAPPING_URL);
-	}
-
-	class ContextLoaderListenerInstanceFactory implements
-			InstanceFactory<ContextLoaderListener> {
-
-		public InstanceHandle<ContextLoaderListener> createInstance()
-				throws InstantiationException {
-			ContextLoaderListenerInstanceHandle ContextLoaderListenerInstanceHandle = new ContextLoaderListenerInstanceHandle();
-			return ContextLoaderListenerInstanceHandle;
-		}
-
-		class ContextLoaderListenerInstanceHandle implements
-				InstanceHandle<ContextLoaderListener> {
-
-			@Override
-			public ContextLoaderListener getInstance() {
-				ContextLoaderListener ContextLoaderListener = new ContextLoaderListener(
-						SupportAssistApplicationContext.INSTANCE.getContext());
-				return ContextLoaderListener;
-			}
-
-			@Override
-			public void release() {
-				// TODO Auto-generated method stub
-			}
-
-		}
-
-	}
-
-	class DispatcherServletInstanceFactory implements
-			InstanceFactory<DispatcherServlet> {
-
-		public InstanceHandle<DispatcherServlet> createInstance()
-				throws InstantiationException {
-			DispatcherServletInstanceHandle dispatcherServletInstanceHandle = new DispatcherServletInstanceHandle();
-			return dispatcherServletInstanceHandle;
-		}
-
-		class DispatcherServletInstanceHandle implements
-				InstanceHandle<DispatcherServlet> {
-
-			@Override
-			public DispatcherServlet getInstance() {
-				DispatcherServlet dispatcherServlet = new DispatcherServlet(
-						SupportAssistApplicationContext.INSTANCE.getContext());
-				return dispatcherServlet;
-			}
-
-			@Override
-			public void release() {
-				// TODO Auto-generated method stub
-			}
-
-		}
-
 	}
 
 	private static final Semaphore semaphore = new Semaphore(0);
